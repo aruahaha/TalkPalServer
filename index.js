@@ -13,7 +13,7 @@ const io = require("socket.io")(server, {
 });
 
 io.on("connection", (socket) => {
-  res.send(socket.id);
+  res.send(`<h1> socke id : ${socket.id} </h1>`);
 
   socket.on("join_chat", (data) => {
     socket.join(data);
