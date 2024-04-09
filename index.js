@@ -7,8 +7,7 @@ app.use(cors());
 const server = require("http").Server(app);
 
 app.get("/", (req, res) => {
-  res.write(`<h1>Socket start on : ${PORT}</h1>`);
-  res.end;
+  res.send(`<h1>Socket start on : ${PORT}</h1>`);
 });
 
 const io = require("socket.io")(server, {
