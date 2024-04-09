@@ -10,7 +10,7 @@ const io = require("socket.io")(server, {
   cors: {
     origin: ["http://192.168.29.86:8081"],
   },
-  allowEIO3: true,
+  allowEIO4: true,
 });
 
 io.on("connection", (socket) => {
