@@ -12,7 +12,7 @@ app.get("/", (req, res) => {
 
 const io = require("socket.io")(server, {
   cors: {
-    origin: ["http://192.168.29.86:8081"],
+    origin: ["http://192.168.29.86:8081", "http://localhost:8081"],
   },
 });
 
