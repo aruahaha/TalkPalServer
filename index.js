@@ -6,10 +6,6 @@ app.use(cors());
 
 const server = require("http").Server(app);
 
-app.get("/", (req, res) => {
-  res.send(`<h1>Socket start on : ${PORT}</h1>`);
-});
-
 const io = require("socket.io")(server, {
   cors: {
     origin: ["http://192.168.29.86:8081", "http://localhost:8081"],
@@ -17,7 +13,7 @@ const io = require("socket.io")(server, {
 });
 
 io.on("connection", (socket) => {
-  console.log(socket.id);
+  res.send(socket.id);
 
   socket.on("join_chat", (data) => {
     socket.join(data);
@@ -31,6 +27,10 @@ io.on("connection", (socket) => {
   socket.on("disconnect", () => {
     console.log("user disconnected ", socket.id);
   });
+});
+
+app.get("/", (req, res) => {
+  res.send(`<h1>Socket start on : ${PORT}</h1>`);
 });
 
 server.listen(PORT, () => {
