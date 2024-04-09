@@ -9,11 +9,15 @@ const server = require("http").Server(app);
 const io = require("socket.io")(server, {
   cors: {
     origin: ["http://192.168.29.86:8081", "http://localhost:8081"],
+    methods: ["GET", "POST"],
+    transports: ["websocket", "polling"],
+    credentials: true,
   },
+  allowEIO3: true,
 });
 
 io.on("connection", (socket) => {
-  res.send(`<h1> socke id : ${socket.id} </h1>`);
+  console.log(socket.id);
 
   socket.on("join_chat", (data) => {
     socket.join(data);
