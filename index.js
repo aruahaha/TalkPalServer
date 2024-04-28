@@ -1,32 +1,42 @@
 const express = require("express");
 const app = express();
 const PORT = process.env.PORT || 3000;
+const dotenv = require("dotenv");
+dotenv.config();
 const cors = require("cors");
 app.use(cors());
+const { createClient } = require("@supabase/supabase-js");
+
+const supabaseUrl = process.env.SUPABASE_URL;
+const supabaseAnonKey = process.env.SUPABASE_ANON_KEY;
+
+const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 const server = require("http").Server(app);
 
 const io = require("socket.io")(server, {
   cors: {
-    origin: ["http://192.168.29.86:8081"],
+    origin: "http://192.168.29.86:8081",
   },
-  allowEIO4: true,
 });
 
 io.on("connection", (socket) => {
   console.log(socket.id);
-
-  socket.on("join_chat", (data) => {
-    socket.join(data);
-    console.log(`User with ${socket.id} joined room ${data}`);
+  socket.on("on_load", (user) => {
+    const updateRow = async () => {
+      await supabase
+        .from("TalkPal")
+        .update({ socketId: socket.id })
+        .eq("name", user);
+    };
+    updateRow();
+  });
+  socket.on("join_chat", (recevier) => {
+    socket.emit("receiver", recevier);
   });
 
   socket.on("send_message", (data) => {
-    socket.to(data.room).emit("receive_message", data);
-  });
-
-  socket.on("disconnect", () => {
-    console.log("user disconnected ", socket.id);
+    socket.to(data.receiverId).emit("receive_message", data);
   });
 });
 
