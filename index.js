@@ -16,7 +16,7 @@ const server = require("http").Server(app);
 
 const io = require("socket.io")(server, {
   cors: {
-    origin: "http://192.168.29.86:8081",
+    origin: "",
   },
 });
 
